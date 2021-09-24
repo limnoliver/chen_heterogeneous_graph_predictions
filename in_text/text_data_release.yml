@@ -1,54 +1,256 @@
 title: >-
-  Data release: [your title here]
-
+  Model predictions for heterogeneous stream-reservoir graph networks with data assimilation
 
 abstract: >-
-  [a description of this data release]
+  This data release provides the predictions from stream temperature models described in Chen et al. 2021. 
+  Briefly, various deep learning and process-guided deep learning models were built to 
+  test improved performance of stream temperature predictions below reservoirs in the Delaware
+  River Basin. Various model architectures, training schemes, and data assimilation methods were used to generate
+  the table and figures in Chen et a.l (2021) and predictions of each model are captured in this release.
+  For each model, there are test period predictions for 56 river reaches from 2006-10-01 through 2020-09-30.
+  Model input and validation data can be found in Oliver et al. (2021).
       
-authors: ["[NAME 1]", "[NAME 2]"]
-pubdate: 2020 # replace with actual year, e.g., 2020
-doi: https://doi.org/YY.XXXXX/XXXXXX # replace with actual DOI
+authors: ["Shengyu Chen", "Alison Appling", 'Samantha Oliver', 'Hayley Corson-Dosch', 'Jordan Read', 'Jeffrey Sadler', 'Jacob Zwart', 'Xiaowei Jia']
+pubdate: 2021 # replace with actual year, e.g., 2020
+doi: https://doi.org/10.5066/P9AHPO0H # replace with actual DOI
 
 build-environment: Multiple computer systems were used to generate these data, including linux, OSX. The open source languages R and Python were used on all systems.
 
 # ----associated publication----
 larger-cites:
   -
-    authors: ["Jordan S. Read", "Xiaowei Jia", "Jared Willard", "Alison P. Appling", "Jacob A. Zwart","Samantha K. Oliver","Anuj Karpatne","Gretchen J.A. Hansen", "Paul C. Hanson", "William Watkins", "Michael Steinbach","Vipin Kumar"]
+    authors: ["Shengyu Chen", "Alison Appling", 'Samantha Oliver', 'Hayley Corson-Dosch', 'Jordan Read', 'Jeffrey Sadler', 'Jacob Zwart', 'Xiaowei Jia']
     title: >-
-      Process-guided deep learning predictions of lake water temperature
+      Heterogeneous stream-reservoir graph networks with data assimilation
     pubdate: 2019
 
 # ----supporting publications----    
 cross-cites:
   -
-    authors: ['Luke A. Winslow','Gretchen J.A. Hansen','Jordan S. Read','Michael Notaro']
+    authors: ['Samantha Oliver', 'Alison Appling', 'Rasha Atshan', 'David Watkins', 'Jeffrey Sadler', 'Hayley Corson-Dosch', 'Jacob Zwart', 'Jordan Read']
     title: >-
-      Large-scale modeled contemporary and future water temperature estimates for 10,774 Midwestern U.S. Lakes
-    pubdate: 2017
-    link: http://dx.doi.org/10.1038/sdata.2017.53
+      Predicting water temperature in the Delaware River Basin
+    pubdate: 2021
+    link: https://doi.org/10.5066/P9GD8I7A.
+  -
+    authors: ['Roland Viger', 'Andrew Bock']
+    title: >-
+      GIS Features of the Geospatial Fabric for National Hydrologic Modeling
+    pubdate: 2014
+    link: http://dx.doi.org/doi:10.5066/F7542KMD
 
 process-date: !expr format(Sys.time(),'%Y%m%d')
 file-format: a single comma-delimited file and a single zipped shapefile
 
 entities:
   -
-    data-name: example_cars.csv
-    data-description: A csv file containing important information...
+    data-name: out_data/core_model_predictions.csv
+    data-description: >-
+      A csv file containing predictions from the core models used in Chen et al. 2021.
+      Predictions from these models were used to generate the results in Table 1 and Figure 3.
     attributes:
     -
-      attr-label: speed
-      attr-def: definition of column_name_1
+      attr-label: seg_id_nat
+      attr-def: unique stream segment identifier
+      attr-def: >-
+        National unique stream reach identifier. 
+        This is the ID named seg_id_nat from the Geospatial Fabric for National Hydrologic Modeling.
       attr-defs: >-
-        citation or URL of column_name_1. If citation, should appear in cross-cites. Can use NA or "This release"
+        https://www.sciencebase.gov/catalog/item/535eda80e4b08e65d60fc834
       data-min: NA
       data-max: NA
       data-units: NA
     -
-      attr-label: dist
-      attr-def: definition of column_name_2
+      attr-label: date
+      attr-def: date of prediction
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: NA
+    -
+      attr-label: temp_deg_c
+      attr-def: predicted stream temperature, in degrees C
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: degrees Celcius
+    -
+      attr-label: model
+      attr-def: >-
+        model used to make temperature predictions; abbreviation describes the underlying model architechture where
+        
+        
+        ANN = artificial neural network
+        
+        RNN = recurrent neural network
+                
+        RGrN = recurrent graph neural network
+        
+        HRGN = heterogeneous graph network
+        
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: NA
+    -
+      attr-label: state_update
+      attr-def: >- 
+        The type of model state adjustment used for data assimilation, either an inversion network
+        or a Kalman filter. NA indicates no data assimilation or state updates were conducted in the model.
+        The Kalman filter corresponds to "-KF" and the inversion network to "-adj" throughout Chen et al. (2021).
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: NA
+    -
+      attr-label: site_withhold
+      attr-def: >-
+        Logical, whether data from the site just below the Cannonsville reservoir was withheld during model training.
+        This corresponds to the columns labeled as "After hiding" in table 1.      
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: NA
+  -
+    data-name: assimilation_experiment_predictions.csv
+    data-description: >-
+      A csv file containing predictions from the data assimilation experiments in Chen et al. 2021.
+      All predictions were generated with the heterogeneous graph neural network (HRGN) with 
+      data assimilation using the inversion network technique. The only difference across models
+      is the proportion of data used to update model states. Predictions from these models were used to generate the results in Figure 4b and Figure 6.
+    attributes:
+    -
+      attr-label: seg_id_nat
+      attr-def: unique stream segment identifier
+      attr-def: >-
+        National unique stream reach identifier. 
+        This is the ID named seg_id_nat from the Geospatial Fabric for National Hydrologic Modeling.
       attr-defs: >-
-        citation or URL of column_name_2. If citation, should appear in cross-cites. Can use NA or "This release"
+        https://www.sciencebase.gov/catalog/item/535eda80e4b08e65d60fc834
+      data-min: NA
+      data-max: NA
+      data-units: NA
+    -
+      attr-label: date
+      attr-def: date of prediction
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: NA
+    -
+      attr-label: temp_deg_c
+      attr-def: predicted stream temperature, in degrees C
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: degrees Celcius
+    -
+      attr-label: prop_obs
+      attr-def: >-
+        The proportion of observations used for state adjustments.      
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: NA
+  -
+    data-name: window_experiment_predictions.csv
+    data-description: >-
+      A csv file containing predictions from the data assimilation window size experiments in Chen et al. 2021.
+      All predictions were generated with the heterogeneous graph neural network (HRGN) with data assimilation using the 
+      inversion network, and the models trained without data from the segment below the Cannonsville reservoir.  
+      The only difference across models is the frequency at which data were assimilated (window size, in days).
+      Predictions from these models were used to generate the results in Figure 4a and Figure 5.
+    attributes:
+    -
+      attr-label: seg_id_nat
+      attr-def: unique stream segment identifier
+      attr-def: >-
+        National unique stream reach identifier. 
+        This is the ID named seg_id_nat from the Geospatial Fabric for National Hydrologic Modeling.
+      attr-defs: >-
+        https://www.sciencebase.gov/catalog/item/535eda80e4b08e65d60fc834
+      data-min: NA
+      data-max: NA
+      data-units: NA
+    -
+      attr-label: date
+      attr-def: date of prediction
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: NA
+    -
+      attr-label: temp_deg_c
+      attr-def: predicted stream temperature, in degrees C
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: degrees Celcius
+    -
+      attr-label: window
+      attr-def: >-
+        The frequency of which the model states were updated in the data assimilation framework, in days.      
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: days
+  -
+    data-name: pretraining_experiment_predictions.csv
+    data-description: >-
+      A csv file containing predictions from the pretraining experiments in Chen et al. 2021.
+      The heterogeneous graph neural network (HGRN) model was used in this experiment, and differences across
+      models included whether pretraining was used, the proportion of training data used, and whether data assimilation
+      using the inversion network was implemented.
+      Predictions from these models were used to generate the results in Table 2.
+    attributes:
+    -
+      attr-label: seg_id_nat
+      attr-def: unique stream segment identifier
+      attr-def: >-
+        National unique stream reach identifier. 
+        This is the ID named seg_id_nat from the Geospatial Fabric for National Hydrologic Modeling.
+      attr-defs: >-
+        https://www.sciencebase.gov/catalog/item/535eda80e4b08e65d60fc834
+      data-min: NA
+      data-max: NA
+      data-units: NA
+    -
+      attr-label: date
+      attr-def: date of prediction
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: NA
+    -
+      attr-label: temp_deg_c
+      attr-def: predicted stream temperature, in degrees C
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: degrees Celcius
+    -
+      attr-label: pretraining
+      attr-def: >-
+        Logical, whether pre-training on process model predictions was used.      
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: NA
+    -
+      attr-label: state_update
+      attr-def: >-
+        The type of model state adjustment used for data assimilation, either an inversion network
+        or a Kalman filter. NA indicates no data assimilation or state updates were conducted in the model.
+        The Kalman filter corresponds to "-KF" and the inversion network to "-adj" throughout Chen et al. (2021).
+      attr-defs: NA
+      data-min: NA
+      data-max: NA
+      data-units: NA
+    -
+      attr-label: prop_training
+      attr-def: >-
+        The proportion of data used in the training period.
+      attr-defs: NA
       data-min: NA
       data-max: NA
       data-units: NA

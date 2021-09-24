@@ -1,4 +1,10 @@
-
+fetch_network <- function(rds_in) {
+  sf_object <- readRDS(rds_in)
+  sf_filtered <- sf_object$edges %>%
+    select(seg_id_nat) %>%
+    sf::st_transform(crs = 4326)
+  return(sf_filtered)
+}
 
 sf_to_zip <- function(zip_filename, sf_object, layer_name){
   cdir <- getwd()
